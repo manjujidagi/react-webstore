@@ -1,6 +1,11 @@
 export class ReactWebStore {
+	
 	constructor() {
+		if (!ReactWebStore._instance) {
+		  ReactWebStore._instance = this;
+		}
 		this.state = {};
+		return ReactWebStore._instance;
 	}
 
 	store(key, payload) {

@@ -22,7 +22,6 @@ ___
 import React from 'react'
 
 import { ReactWebStore } from 'react-webstore';
-// import 'react-webstore/dist/index.css'
 
 const App = () => {
 
@@ -39,7 +38,6 @@ const App = () => {
   })
 
   return (
-    // <ExampleComponent text="Create React Library Example 😄" />
     <div>
       
       <button onClick={() => {

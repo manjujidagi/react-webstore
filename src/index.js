@@ -3,8 +3,8 @@ export class ReactWebStore {
 	constructor() {
 		if (!ReactWebStore._instance) {
 		  ReactWebStore._instance = this;
+		  this.state = {};
 		}
-		this.state = {};
 		return ReactWebStore._instance;
 	}
 

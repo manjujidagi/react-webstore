@@ -85,18 +85,18 @@ export class WorldComponent extends React.Component {
     constructor() {
         super()
 
-        this.state = {
-            message: ''
-        };
         this.rws = new ReactWebStore();
+        this.state = {
+            message: this.rws.getStore('message')
+        };
+    }
 
+    componentDidMount() {
         this.rws.subscribe('message', (e) => {
-            let msg = this.rws.getStore(e.type);
             this.setState({
-                'message' : msg
+                'message' : this.rws.getStore(e.type)
             });
         })
-
     }
 
     render() {

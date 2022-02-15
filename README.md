@@ -50,9 +50,11 @@ export class HelloComponent extends React.Component {
     constructor() {
         super()
 
-        this.rws = new ReactWebStore();
+        // 'true' for persistent Storage
+        // 'false' for normal use without storage
+        this.rws = new ReactWebStore(persistent=true);
         this.state = {
-            message: ''
+            message: this.rws.getStore('message') ? this.rws.getStore('message') : ''
         };
     }
 
@@ -85,7 +87,9 @@ export class WorldComponent extends React.Component {
     constructor() {
         super()
 
-        this.rws = new ReactWebStore();
+        // 'true' for persistent Storage
+        // 'false' for normal use without storage
+        this.rws = new ReactWebStore(persistent=true);
         this.state = {
             message: this.rws.getStore('message')
         };

@@ -6,9 +6,9 @@ export class HelloComponent extends React.Component {
     constructor() {
         super()
 
-        this.rws = new ReactWebStore();
+        this.rws = new ReactWebStore(true);
         this.state = {
-            message: ''
+            message: this.rws.getStore('message') ? this.rws.getStore('message') : ''
         };
     }
 

@@ -6,7 +6,7 @@ export class WorldComponent extends React.Component {
     constructor() {
         super()
 
-        this.rws = new ReactWebStore();
+        this.rws = new ReactWebStore(true);
         this.state = {
             message: this.rws.getStore('message')
         };

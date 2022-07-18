@@ -14,7 +14,8 @@
 npm install --save react-webstore
 ```
 
-## Usage
+
+## Usage ( Without Persistent Storage )
 
 ### App.js
 ___
@@ -50,25 +51,29 @@ export class HelloComponent extends React.Component {
     constructor() {
         super()
 
-        // 'true' for persistent Storage
-        // 'false' for normal use without storage
-        this.rws = new ReactWebStore(persistent=true);
+        // for persistent storage, refer next section
+        this.rws = new ReactWebStore();
         this.state = {
-            message: this.rws.getStore('message') ? this.rws.getStore('message') : ''
+            message: ''
         };
     }
 
     render() {
         return (
             <>
-                <input type="text" placeholder='Enter Message' value={this.state.message} onChange={(e) => {
-                    this.setState({
-                        'message': e.target.value
-                    });
-                }} />
-                <button onClick={() => {
-                    this.rws.store('message', this.state.message);
-                }}>Send Message To World</button>
+                <input type="text" placeholder='Enter Message'
+                    value={this.state.message}
+                    onChange={(e) => {
+                        this.setState({
+                            'message': e.target.value
+                        });
+                    }}
+                />
+                <button
+                    onClick={() => {
+                        this.rws.store('message', this.state.message);
+                    }}
+                >Send Message To World Component</button>
             </>
         )
     }
@@ -89,6 +94,110 @@ export class WorldComponent extends React.Component {
 
         // 'true' for persistent Storage
         // 'false' for normal use without storage
+        this.rws = new ReactWebStore(persistent=true);
+        this.state = {
+            message: this.rws.getStore('message')
+        };
+    }
+
+    componentDidMount() {
+        this.rws.subscribe('message', (e) => {
+            this.setState({
+                'message' : this.rws.getStore(e.type)
+            });
+        })
+    }
+
+    render() {
+        return (
+            <>
+                <p>Message From Hello Component is - {this.state.message}</p>
+            </>
+        )
+    }
+
+}
+```
+
+
+## Usage ( With Persistent Storage )
+
+### App.js
+___
+```jsx
+import React from 'react'
+
+import { HelloComponent } from './Components/HelloComponent';
+import { WorldComponent } from './Components/WorldComponent';
+
+const App = () => {
+
+  return (
+    <div>
+
+      <HelloComponent />
+      <WorldComponent />
+
+    </div>
+  )
+}
+
+export default App
+```
+
+### Components/HelloComponent.js
+___
+```jsx
+import React from 'react'
+import { ReactWebStore } from 'react-webstore';
+
+export class HelloComponent extends React.Component {
+
+    constructor() {
+        super()
+
+        // The persisted data uses localStorage to store & retrieve the data
+        this.rws = new ReactWebStore(persistent=true);
+        this.state = {
+            message: this.rws.getStore('message') ? this.rws.getStore('message') : ''
+        };
+    }
+
+    render() {
+        return (
+            <>
+                <input type="text" placeholder='Enter Message'
+                    value={this.state.message}
+                    onChange={(e) => {
+                        this.setState({
+                            'message': e.target.value
+                        });
+                    }}
+                />
+                <button
+                    onClick={() => {
+                        this.rws.store('message', this.state.message);
+                    }}
+                >Send Message To World</button>
+            </>
+        )
+    }
+
+}
+```
+
+### Components/WorldComponent.js
+___
+```jsx
+import React from 'react'
+import { ReactWebStore } from 'react-webstore';
+
+export class WorldComponent extends React.Component {
+    
+    constructor() {
+        super()
+
+        // The persisted data uses localStorage to store & retrieve the data
         this.rws = new ReactWebStore(persistent=true);
         this.state = {
             message: this.rws.getStore('message')
